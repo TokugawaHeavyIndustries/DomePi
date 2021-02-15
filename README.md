@@ -4,14 +4,18 @@ A Raspberry Pi image that features the Domesday Duplicator capture application v
 
 ## About
 
-This image contains the following:
+This software aims to simplify the usage of the Domesday Duplicator capture application.  [Before reading any further, head on over to the Domesday86 website to read more about the project.](https://www.domesday86.com/?page_id=978).
+
+As the DdD is high-bandwidth and requires USB3.0, this image is only supported on Raspberry Pi 4 boards.
+
+This image contains the following software:
 * Xvfb - X11 in a virtual framebuffer
 * x11vnc - VNC server that scrapes the above X11 server
 * noNVC - HTML5 canvas vnc viewer
 * Fluxbox - Small window manager
 * Supervisor - Process controller
 * usbreset - Resets the usb bus on init
-* DomesdayDuplicator - GUI front-end for the Domesday Duplicator project
+* DomesdayDuplicator - GUI front-end for the Domesday Duplicator project [repo](https://github.com/simoninns/DomesdayDuplicator)
 
 
 ## Installation
@@ -32,6 +36,11 @@ Simply navigate to your Pi's IP address via port 8080 to use.  For example:
 ```
 http://192.168.1.199:8080
 ```
+
+## Notes
+
+1) Default username/password is pi/raspberry.  You'll want to change this by logging in via ssh and using passwd.
+2) Sharing has not been configured yet.
 
 ## License
 [GPLv3](https://github.com/TokugawaHeavyIndustries/DomePi/blob/main/LICENSE)
