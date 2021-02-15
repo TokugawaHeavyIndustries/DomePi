@@ -32,3 +32,6 @@ qmake
 make all
 make install
 
+## download supervisor conf
+wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/supervisord.conf
+mv supervisord.conf /etc/supervisor/conf.d/supervisord.conf
