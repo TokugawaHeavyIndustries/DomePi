@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## add jessie repo for old x11vnc version
-$jessierepo = "deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi"
+jessierepo="deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi"
 
 if grep -Fxq "$jessierepo" "/etc/apt/sources.list" ;
 then 
