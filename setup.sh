@@ -20,23 +20,20 @@ unlink /var/run/supervisor.sock
 ## install old x11vnc version with tearing fix
 apt -y install libvncserver0=0.9.9+dfsg2-6.1+deb8u8 x11vnc=0.9.13-1.2 x11vnc-data=0.9.13-1.2
 
-## bring down the novnc embed that doesnt suck
-mkdir /root/novnc
-cd /root/novnc
+## bring down the novnc embed that doesnt suck, build usbreset, move supervisor conf
+mkdir /root/build
+cd /root/build
 git clone https://github.com/TokugawaHeavyIndustries/DomePi.git
-mv /root/novnc/DomePi/novnc/ /usr/share/novnc/
-cd ..
+mv /root/build/DomePi/novnc/ /usr/share/novnc/
+cd /root/build/DomePi
+cc usbreset.c -o usbreset
+chmod +x usbreset
+mv usbreset /etc/
+mv supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 rm -r -f ./novnc
 
 ##start install for build reqs
 apt -y install qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0
-
-##download and build usbreset
-wget "https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/usbreset.c"
-cc usbreset.c -o usbreset
-chmod +x usbreset
-mv usbreset /etc/
-rm usbreset.c
 
 ##buld app
 mkdir /etc/ddd
@@ -46,7 +43,3 @@ cd ./DomesdayDuplicator/Linux-Application/DomesdayDuplicator
 qmake
 make all
 make install
-
-## download supervisor conf and copy to dir
-wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/supervisord.conf
-mv supervisord.conf /etc/supervisor/conf.d/supervisord.conf
