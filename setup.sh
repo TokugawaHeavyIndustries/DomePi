@@ -43,3 +43,5 @@ cd ./DomesdayDuplicator/Linux-Application/DomesdayDuplicator
 qmake
 make all
 make install
+
+reboot now
