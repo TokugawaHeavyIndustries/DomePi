@@ -20,6 +20,12 @@ unlink /var/run/supervisor.sock
 ## install old x11vnc version with tearing fix
 apt -y install libvncserver0=0.9.9+dfsg2-6.1+deb8u8 x11vnc=0.9.13-1.2 x11vnc-data=0.9.13-1.2
 
+## bring down the novnc embed that doesnt suck
+mkdir /root/novnc
+cd /root/novnc
+git clone https://github.com/TokugawaHeavyIndustries/DomePi.git
+mv /root/novnc/DomePi/novnc/ /usr/share/novnc/
+
 ##start install for build reqs
 apt -y install git qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0
 
