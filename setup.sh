@@ -33,7 +33,7 @@ mv supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 rm -r -f ./novnc
 
 ##start install for build reqs
-apt -y install qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0
+apt -y install qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0-0-dev
 
 ##buld app
 mkdir /etc/ddd
