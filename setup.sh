@@ -4,8 +4,8 @@
 jessierepo="deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi"
 
 if grep -Fxq "$jessierepo" "/etc/apt/sources.list" ;
-then 
-        echo 'yes' ;
+then
+        echo 'Repo already exists' ;
 else
         echo "$jessierepo" | tee -a /etc/apt/sources.list ;
 fi
@@ -39,6 +39,6 @@ qmake
 make all
 make install
 
-## download supervisor conf
+## download supervisor conf and copy to dir
 wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/supervisord.conf
 mv supervisord.conf /etc/supervisor/conf.d/supervisord.conf
