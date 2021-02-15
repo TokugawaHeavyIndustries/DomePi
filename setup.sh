@@ -25,6 +25,8 @@ mkdir /root/novnc
 cd /root/novnc
 git clone https://github.com/TokugawaHeavyIndustries/DomePi.git
 mv /root/novnc/DomePi/novnc/ /usr/share/novnc/
+cd ..
+rm -r -f ./novnc
 
 ##start install for build reqs
 apt -y install git qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0
