@@ -1,7 +1,14 @@
 #!/bin/bash
 
 ## add jessie repo for old x11vnc version
-echo "deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi" | tee -a /etc/apt/sources.list
+$jessierepo = "deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi"
+
+if grep -Fxq "$jessierepo" "/etc/apt/sources.list" ;
+then 
+        echo 'yes' ;
+else
+        echo "$jessierepo" | tee -a /etc/apt/sources.list ;
+fi
 apt update
 
 ## install virtual framebuffer, supervisor, novnc, and dwm
