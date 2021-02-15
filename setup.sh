@@ -11,8 +11,8 @@ else
 fi
 apt update
 
-## install virtual framebuffer, supervisor, and dwm
-apt -y install xvfb supervisor fluxbox
+## install git, virtual framebuffer, supervisor, and dwm
+apt -y install xvfb supervisor fluxbox git
 
 ## fix supervisor net issue
 unlink /var/run/supervisor.sock
