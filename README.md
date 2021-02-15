@@ -43,4 +43,4 @@ http://192.168.1.199:8080
 2) Sharing has not been configured yet.
 
 ## License
-[GPLv3](https://github.com/TokugawaHeavyIndustries/DomePi/blob/main/LICENSE)
+This image contains the Domesday Duplicator software from Simon Inns and is shared under the original software's license: [GPLv3](https://github.com/TokugawaHeavyIndustries/DomePi/blob/main/LICENSE)
