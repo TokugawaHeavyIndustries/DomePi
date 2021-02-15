@@ -12,16 +12,16 @@ fi
 apt update
 
 ## install virtual framebuffer, supervisor, novnc, and dwm
-apt install xvfb supervisor fluxbox novnc
+apt -y install xvfb supervisor fluxbox novnc
 
 ## fix supervisor net issue
 unlink /var/run/supervisor.sock
 
 ## install old x11vnc version with tearing fix
-sudo apt install libvncserver0=0.9.9+dfsg2-6.1+deb8u8 x11vnc=0.9.13-1.2 x11vnc-data=0.9.13-1.2
+apt -y install libvncserver0=0.9.9+dfsg2-6.1+deb8u8 x11vnc=0.9.13-1.2 x11vnc-data=0.9.13-1.2
 
 ##start install for build reqs
-apt install git qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0
+apt -y install git qtbase5-dev qt5-default qt5-qmake libqt5serialport5-dev libusb-1.0
 
 ##download and build usbreset
 wget "https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/usbreset.c"
