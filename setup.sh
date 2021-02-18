@@ -1,5 +1,15 @@
 #!/bin/bash
 
+## install PowerShell mainly because I love PowerShell and I wrote the post install script in it
+
+if ! command -v pwsh &> /dev/null
+then
+    wget https://github.com/PowerShell/PowerShell/releases/download/v7.1.2/powershell-7.1.2-linux-arm64.tar.gz
+    sudo mkdir /etc/powershell-7.1.2
+    sudo tar -xvf ./powershell-7.1.2-linux-arm64.tar.gz -C /etc/powershell-7.1.2/
+    sudo ln -s /etc/powershell-7.1.2/pwsh /usr/bin/pwsh
+fi
+
 ## add jessie repo for old x11vnc version
 jessierepo="deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi"
 
