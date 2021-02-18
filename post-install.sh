@@ -132,11 +132,11 @@ else {
     Write-Host ""
     Write-Host ""
 
-    Write-Host "Your serial adapter is:" $usbserialconnected "  ............  [x]" 
+    Write-Host "Your serial adapter is:" $usbserialconnected "  .....................  [x]" 
     
     usermod -a -G dialout pi
 
-    Write-Host "User `'pi`' added to dialout group  ........................  [x]" 
+    Write-Host "User `'pi`' added to dialout group  ..........................  [x]" 
 
     $confserline = "serialDevice=" + $usbserialconnected.Trim("/dev/")
     $DDDConfig = "/.config/DomesdayDuplicator.ini"
