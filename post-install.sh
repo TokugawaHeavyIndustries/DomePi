@@ -1,5 +1,7 @@
 #!/usr/bin/pwsh
 
+$CheckMark = [Char]8730
+
 function setstatic {
 
 $writeip = "N"
@@ -112,6 +114,42 @@ if ($hostnameapply = "y") {
 
 }
 
+function serialsetup {
+
+$usbserialconnected = ls /dev/tty* | grep "usb"
+
+if ($usbserialconnected -eq $NULL) {
+    Clear-Host
+    Write-Host "SERIAL SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "There is currently not a USB serial adapter"
+    Write-Host "attached.  Rerun setup to configure later."
+    Write-Host ""
+    pause
+}
+else {
+    Clear-Host
+    Write-Host "SERIAL SETUP"
+    Write-Host ""
+    Write-Host ""
+
+    Write-Host "Your serial adapter is:" $usbserialconnected "  ............  ["$CheckMark "]" 
+    
+    usermod -a -G dialout pi
+
+    Write-Host "User `'pi`' added to dialout group  ........................  ["$CheckMark "]" 
+
+    $confserline = "serialDevice=" + $usbserialconnected
+    $DDDConfig = "./config/DomesdayDuplicator.ini"
+    (Get-Content $DDDConfig) -replace "serialDevice=", $confserline | Set-Content $DDDConfig
+
+    Write-Host "App preferences set  .......................................  ["$CheckMark "]"
+
+    Write-Host ""
+    }
+}
+
 Clear-Host
 Write-Host "**********************************"
 Write-Host "** Thanks for installing DomePi **"
@@ -162,6 +200,24 @@ if ($changehostname -eq "y"){
 
 else {}
 
+Clear-Host
+Write-Host "SERIAL SETUP"
+Write-Host ""
+Write-Host ""
+Write-Host "If you have a USB serial adapter connected,"
+Write-Host "DomePi can configure it to communicate with"
+Write-Host "the Domesday Duplicator capture application"
+Write-Host "and allow controlling your Laserdisc player."
+Write-Host ""
+$configserial = Read-Host -Prompt "Want to set up serial connectivity? Y/(N)"
+
+if ($configserial -eq "Y") {
+
+serialsetup
+
+}
+
+else {}
 
 
 echo "cont"
