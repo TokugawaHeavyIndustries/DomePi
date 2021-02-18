@@ -1,7 +1,5 @@
 #!/usr/bin/pwsh
 
-$CheckMark = [Char]8730
-
 function setstatic {
 
 $writeip = "N"
@@ -134,17 +132,17 @@ else {
     Write-Host ""
     Write-Host ""
 
-    Write-Host "Your serial adapter is:" $usbserialconnected "  ............  ["$CheckMark "]" 
+    Write-Host "Your serial adapter is:" $usbserialconnected "  ............  [x]" 
     
     usermod -a -G dialout pi
 
-    Write-Host "User `'pi`' added to dialout group  ........................  ["$CheckMark "]" 
+    Write-Host "User `'pi`' added to dialout group  ........................  [x]" 
 
-    $confserline = "serialDevice=" + $usbserialconnected
-    $DDDConfig = "./config/DomesdayDuplicator.ini"
+    $confserline = "serialDevice=" + $usbserialconnected.Trim("/dev/")
+    $DDDConfig = "/.config/DomesdayDuplicator.ini"
     (Get-Content $DDDConfig) -replace "serialDevice=", $confserline | Set-Content $DDDConfig
 
-    Write-Host "App preferences set  .......................................  ["$CheckMark "]"
+    Write-Host "App preferences set  .......................................  [x]"
 
     Write-Host ""
     }
