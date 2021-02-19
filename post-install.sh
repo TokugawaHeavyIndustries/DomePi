@@ -114,19 +114,41 @@ if ($hostnameapply = "y") {
 
 function serialsetup {
 
-$usbserialconnected = ls /dev/tty* | grep "usb"
+$usbserialconnected = ls /dev/tty* | grep "USB"
 
-if ($usbserialconnected -eq $NULL) {
+do {
+    do {
+    $usbserialconnected = ls /dev/tty* | grep "USB"
+    if ($usbserialconnected -eq $NULL) {
+        $usbserialname = "NONE"
+    } else {
+        $usbserialname = $usbserialconnected
+    }
+
     Clear-Host
     Write-Host "SERIAL SETUP"
     Write-Host ""
     Write-Host ""
-    Write-Host "There is currently not a USB serial adapter"
-    Write-Host "attached.  Rerun setup to configure later."
+    Write-Host "Detected device: $usbserialname"
     Write-Host ""
-    pause
-}
-else {
+    $serialrescan = "Y"
+    $serialrescan = Read-Host -Prompt "Would you like to rescan? (Y)/N"
+
+    } while ($serialrescan -eq "Y")
+
+    if ($serialrescan -eq "n" -and $usbserialconnected -eq $NULL) {
+        Clear-Host
+        Write-Host "SERIAL SETUP"
+        Write-Host ""
+        Write-Host ""
+        Write-Host "Serial setup cancelled."
+        Pause
+        Break
+    }
+
+} while ($usbserialconnected -eq $NULL)
+
+if ($usbserialconnected -ne $NULL) {
     Clear-Host
     Write-Host "SERIAL SETUP"
     Write-Host ""
@@ -217,5 +239,9 @@ serialsetup
 
 else {}
 
-
-echo "cont"
+Clear-Host
+Write-Host "CAPTURE SETUP"
+Write-Host ""
+Write-Host ""
+Write-Host "DomePi supports capturing to USB3 SSD storage"
+Write-Host "and over 1Gb network via CIFS (SMB) and NFS."
