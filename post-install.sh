@@ -170,6 +170,68 @@ if ($usbserialconnected -ne $NULL) {
     }
 }
 
+function cifssetup {
+
+    $cifsinstalled = apt-cache policy cifs-utils | grep 'none'
+    if ($cifsinstalled -ne $NULL) {
+        apt install cifs-utils
+    }
+
+    $cifsok = "N"
+
+do {
+
+    Clear-Host
+    Write-Host "CIFS SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Enter the complete server and share path."
+    Write-Host "For example: //192.168.11.19/Data/DDDCaps"
+    Write-Host ""
+    $cifsserverpath = Read-Host
+
+    Clear-Host
+    Write-Host "CIFS SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Enter the username."
+    Write-Host ""
+    $cifsusername = Read-Host
+
+    Clear-Host
+    Write-Host "CIFS SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Enter the password."
+    Write-Host ""
+    $cifspass = Read-Host
+
+    Clear-Host
+    Write-Host "NETWORK SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Checking connection."
+
+    if (Test-Path /mnt/dddcifs) {}
+    else {
+    mkdir /mnt/dddcifs }
+    umount /mnt/dddcifs
+    mount -t cifs -o username=$cifsusername,password=$cifspass $cifsserverpath /mnt/dddcifs
+    touch /mnt/dddcifs/DomePi.test
+
+    if (Test-Path /mnt/dddcifs/DomePi.test) {
+
+    $cifsok = "y"
+    rm /mnt/dddcifs/DomePi.test
+    umount /mnt/dddcifs
+
+    }
+
+    } while ( $cifsok -eq "n")
+
+
+}
+
 Clear-Host
 Write-Host "**********************************"
 Write-Host "** Thanks for installing DomePi **"
@@ -239,9 +301,58 @@ serialsetup
 
 else {}
 
+do {
 Clear-Host
 Write-Host "CAPTURE SETUP"
 Write-Host ""
 Write-Host ""
 Write-Host "DomePi supports capturing to USB3 SSD storage"
 Write-Host "and over 1Gb network via CIFS (SMB) and NFS."
+Write-Host "If you chose to capture to local storage, you"
+Write-Host "will have the option of setting up a network"
+Write-Host "share for accessing the capture files."
+Write-Host ""
+Write-Host "Would you like to capture to local storage or"
+$capturechoice = Read-Host -Prompt "over the network? 1) Local 2) Network "
+
+if ($capturechoice -eq "1") {
+    $capturech = 1
+}
+elseif ($capturechoice -eq 2) {
+    $capturech = 2
+} else {
+    $capturech = 3
+}
+
+} until ($capturech -eq 1 -or $capturech -eq 2)
+
+if ($capturech -eq 1) {
+
+    ##local setup here
+
+}
+
+if ($capturech -eq 2) {
+
+    do {
+
+    Clear-Host
+    Write-Host "CAPTURE SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Do you want to capture via NFS or CIFS (SMB)?"
+    $capdestchoice = Read-Host -Prompt "1) NFS 2) CIFS "
+
+    } until ($capdestchoice -eq "1" -or $capdestchoice -eq "2")
+
+    if ($capdestchoice -eq "1") {
+        Write-Host "Setup NFS"
+    }
+    if ($capdestchoice -eq "2") {
+        
+        cifssetup
+
+    }
+
+
+}
