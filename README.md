@@ -40,7 +40,7 @@ http://192.168.1.199:8080
 ## Notes
 
 1) Default username/password is pi/raspberry.  You'll want to change this by logging in via ssh and using passwd.
-2) Sharing has not been configured yet.
+2) NFS Server connect string mount -t nfs -o vers=3 192.168.20.123:/root/ddd/ /mnt/nfstest
 
 ## License
 This image contains the Domesday Duplicator software from Simon Inns and is shared under the original software's license: [GPLv3](https://github.com/TokugawaHeavyIndustries/DomePi/blob/main/LICENSE)
