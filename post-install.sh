@@ -430,8 +430,69 @@ elseif ($capturechoice -eq 2) {
 
 if ($capturech -eq 1) {
 
-    ##local setup here
+    #check if ssd is used
 
+    $sdacheck = blkid | grep "/dev/sda"
+
+    <# note, might need to check speed of attached disk if becomes issue:
+    
+    time for i in `seq 1 1000`; do
+    dd bs=4k if=/dev/sda count=1 skip=$(( $RANDOM * 128 )) >/dev/null 2>&1;
+    done
+    
+    #>
+    Clear-Host
+    Write-Host "CAPTURE SETUP"
+    Write-Host ""
+    Write-Host ""
+
+    if ($sdacheck -eq $NULL) {
+    Write-Host "You seem to be running DomePi from SD."
+    Write-Host "Either reflash to an SSD or re-run"
+    Write-Host "setup and choose Network capture."
+    exit
+    }
+
+    Write-Host "For local storage, captures will be"
+    Write-Host "written to the /root/ddd directory"
+    Write-Host "and then shared out via NFS or CIFS."
+
+    do {
+    Write-Host "Would you like to share via NFS or CIFS?"
+    $sharechoice = Read-Host -Prompt "1) NFS 2) CIFS "
+
+    if ($sharechoice -eq "1") {
+        $sharech = 1
+    }
+    elseif ($sharechoice -eq 2) {
+        $sharech = 2
+    } else {
+        $sharech = 3
+    }
+
+    } until ($sharech -eq 1 -or $sharech -eq 2)
+
+    if ($sharech -eq 1) {
+           $nfsinstalled = apt-cache policy nfs-kernel-server | grep 'none'
+            if ($cifsinstalled -ne $NULL) {
+                apt install nfs-kernel-serverx
+        }
+
+        if (Test-Path /root/ddd -eq $False){
+        mkdir /root/ddd
+        }
+
+        (Get-Content /etc/exports) -notmatch "/root/ddd" | Set-Content /etc/exports
+        echo "/root/ddd *(rw,all_squash,insecure,async,no_subtree_check,anonuid=0,anongid=0)" >> /etc/exports
+        exportfs -ra
+
+        Write-Host ""
+        Write-host "NFS Done"
+
+    }
+    if ($sharech -eq 2) {
+        #cifs serve
+    }
 }
 
 if ($capturech -eq 2) {
