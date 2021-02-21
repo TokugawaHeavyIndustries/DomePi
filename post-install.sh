@@ -89,7 +89,7 @@ Write-Host ""
 $hostnameapply = Read-Host -Prompt "Apply changes?  They'll take effect at next reboot. (Y/N)"
 
 
-} while ($hostnameapply = "n")
+} while ($hostnameapply -eq "n")
 
 if ($hostnameapply = "y") {
 
@@ -339,7 +339,7 @@ function nfsclientsetup {
 
 function localcapconfig {
 
-    if (Test-Path /root/ddd -eq $False){
+    if ((Test-Path /root/ddd) -eq $False){
     mkdir /root/ddd
     }
     
@@ -523,7 +523,10 @@ if ($capturech -eq 1) {
     localcapconfig
             $cifsserverinstalled = apt-cache policy samba-common-bin | grep 'none'
             if ($cifsserverinstalled -ne $NULL) {
-                apt install samba-common-bin
+                echo "samba-common samba-common/workgroup string  WORKGROUP" | sudo debconf-set-selections
+                echo "samba-common samba-common/dhcp boolean true" | sudo debconf-set-selections
+                echo "samba-common samba-common/do_debconf boolean true" | sudo debconf-set-selections
+                apt install samba samba-common-bin -y
         }
 
         $smbconffiledec = [System.Convert]::FromBase64String($smbconffile)
