@@ -170,7 +170,7 @@ if ($usbserialconnected -ne $NULL) {
     }
 }
 
-function cifssetup {
+function cifsclientsetup {
 
     $cifsinstalled = apt-cache policy cifs-utils | grep 'none'
     if ($cifsinstalled -ne $NULL) {
@@ -207,27 +207,129 @@ do {
     $cifspass = Read-Host
 
     Clear-Host
-    Write-Host "NETWORK SETUP"
+    Write-Host "CIFS SETUP"
     Write-Host ""
     Write-Host ""
-    Write-Host "Checking connection."
 
     if (Test-Path /mnt/dddcifs) {}
     else {
     mkdir /mnt/dddcifs }
+
+    if (mount | grep "dddcifs") {
     umount /mnt/dddcifs
-    mount -t cifs -o username=$cifsusername,password=$cifspass $cifsserverpath /mnt/dddcifs
-    touch /mnt/dddcifs/DomePi.test
-
-    if (Test-Path /mnt/dddcifs/DomePi.test) {
-
-    $cifsok = "y"
-    rm /mnt/dddcifs/DomePi.test
-    umount /mnt/dddcifs
-
     }
 
+    try {
+    mount -t cifs -o username=$cifsusername,password=$cifspass $cifsserverpath /mnt/dddcifs
+    } catch {
+    Write-Host $Error
+    $cifsoof = "y"
+    }
+    if ($cifsoof -ne "y") {
+    Write-Host "Success!"
+
+    umount /mnt/dddcifs
+
+    $fstabexist = Select-String -Path /etc/fstab -Pattern "dddcifs"
+    if ($fstabexist -ne $NULL) {
+
+    (Get-Content /etc/fstab) -notmatch "dddcifs" | Set-Content /etc/fstab
+
+    }
+    $fstabline = $cifsserverpath + "  /mnt/dddcifs  cifs  username=" + $cifsusername + ",password=" + $cifspass + "  0  0"
+    echo $fstabline >> /etc/fstab
+    mount -a
+    $cifsok = "y"
+    }
+    pause
     } while ( $cifsok -eq "n")
+
+
+}
+
+function nfsclientsetup {
+
+   $nfsinstalled = apt-cache policy nfs-common | grep 'none'
+    if ($cifsinstalled -ne $NULL) {
+        apt install nfs-common
+    }
+
+    $nfsok = "N" 
+
+    do {
+
+    Clear-Host
+    Write-Host "NFS SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Enter the complete server and share path."
+    Write-Host "For example: 192.168.11.19:/DDDCaps"
+    Write-Host ""
+    $nfsserverpath = Read-Host
+
+    Clear-Host
+    Write-Host "NFS SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Enter the protocol. Normally (and default) TCP."
+    Write-Host ""
+    $nfsprotoprompt = Read-Host -Prompt "1) TCP 2) UDP"
+    if ($nfsprotoprompt -eq "1") {
+    $nfsproto = "tcp"
+    }
+    elseif ($nfsprotoprompt -eq "2") {
+    $nfsproto = "udp"
+    }
+    else {
+    $nfsproto = "tcp"
+    }
+
+
+    Clear-Host
+    Write-Host "CIFS SETUP"
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Enter the port. Typically 2049"
+    Write-Host ""
+    $nfsport = Read-Host
+
+    Clear-Host
+    Write-Host "CIFS SETUP"
+    Write-Host ""
+    Write-Host ""
+
+    if (Test-Path /mnt/dddnfs) {}
+    else {
+    mkdir /mnt/dddnfs }
+
+    if (mount | grep "dddnfs") {
+    umount /mnt/dddnfs
+    }
+
+    try {
+    mount -t nfs -o proto=$nfsproto,port=$nfsport $nfsserverpath /mnt/dddnfs
+    } catch {
+    Write-Host $Error
+    $nfsoof = "y"
+    }
+    if ($nfsoof -ne "y") {
+    Write-Host "Success!"
+
+    umount /mnt/dddnfs
+
+    $fstabexistnfs = Select-String -Path /etc/fstab -Pattern "dddnfs"
+    if ($fstabexistnfs -ne $NULL) {
+
+    (Get-Content /etc/fstab) -notmatch "dddnfs" | Set-Content /etc/fstab
+
+    }
+    $fstablinenfs = $nfsserverpath + "  /mnt/dddnfs  nfs  proto=" + $nfsproto + ",port=" + $nfsport + "  0  0"
+    mount -a
+    echo $fstablinenfs >> /etc/fstab
+    $nfsok = "y"
+    }
+    pause
+    } while ( $nfsok -eq "n")
 
 
 }
@@ -346,11 +448,13 @@ if ($capturech -eq 2) {
     } until ($capdestchoice -eq "1" -or $capdestchoice -eq "2")
 
     if ($capdestchoice -eq "1") {
-        Write-Host "Setup NFS"
+        
+        nfsclientsetup
+
     }
     if ($capdestchoice -eq "2") {
         
-        cifssetup
+        cifsclientsetup
 
     }
 
