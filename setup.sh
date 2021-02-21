@@ -5,9 +5,9 @@
 if ! command -v pwsh &> /dev/null
 then
     wget https://github.com/PowerShell/PowerShell/releases/download/v7.1.2/powershell-7.1.2-linux-arm32.tar.gz
-    sudo mkdir /etc/powershell-7.1.2
-    sudo tar -xvf ./powershell-7.1.2-linux-arm32.tar.gz -C /etc/powershell-7.1.2/
-    sudo ln -s /etc/powershell-7.1.2/pwsh /usr/bin/pwsh
+    mkdir /etc/powershell-7.1.2
+    tar -xvf ./powershell-7.1.2-linux-arm32.tar.gz -C /etc/powershell-7.1.2/
+    ln -s /etc/powershell-7.1.2/pwsh /usr/bin/pwsh
 fi
 
 ## add jessie repo for old x11vnc version
