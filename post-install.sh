@@ -160,9 +160,12 @@ if ($usbserialconnected -ne $NULL) {
 
     Write-Host "User `'pi`' added to dialout group  ..........................  [x]" 
 
+    systemctl stop supervisor
+    pkill -f novnc
     $confserline = "serialDevice=" + $usbserialconnected.Trim("/dev/")
     $DDDConfig = "/.config/DomesdayDuplicator.ini"
     (Get-Content $DDDConfig) -replace "serialDevice=", $confserline | Set-Content $DDDConfig
+    systemctl start supervisor
 
     Write-Host "App preferences set  .......................................  [x]"
 
@@ -334,6 +337,26 @@ function nfsclientsetup {
 
 }
 
+function localcapconfig {
+
+    if (Test-Path /root/ddd -eq $False){
+    mkdir /root/ddd
+    }
+    
+    systemctl stop supervisor
+    pkill -f novnc
+    $DDDconfcapline = "captureDirectory=/root/ddd"
+    $DDDConfCap = "/.config/DomesdayDuplicator.ini"
+
+    $DDDconfcaplinerep = Get-Content $DDDConfCap | Select-String "captureDirectory=" | Select-Object -ExpandProperty Line
+
+    (Get-Content $DDDConfCap) | ForEach-Object {$_ -replace $DDDconfcaplinerep,$DDDconfcapline } | Set-Content $DDDConfCap
+    systemctl start supervisor
+
+}
+
+$smbconffile = "W2dsb2JhbF0KICAgbG9nIGZpbGUgPSAvdmFyL2xvZy9zYW1iYS9sb2cuJW0KICAgbWF4IGxvZyBzaXplID0gMTAwMAogICBsb2dnaW5nID0gZmlsZQogICBtYXAgdG8gZ3Vlc3QgPSBiYWQgdXNlcgoKW0RvbWVzZGF5IER1cGxpY2F0b3JdCnBhdGggPSAvcm9vdC9kZGQKd3JpdGVhYmxlPVllcwpjcmVhdGUgbWFzaz0wNzc3CmRpcmVjdG9yeSBtYXNrPTA3NzcKcHVibGljPXllcwpndWVzdCBvayA9IHllcwpmb3JjZSB1c2VyID0gcm9vdA=="
+
 Clear-Host
 Write-Host "**********************************"
 Write-Host "** Thanks for installing DomePi **"
@@ -473,25 +496,47 @@ if ($capturech -eq 1) {
     } until ($sharech -eq 1 -or $sharech -eq 2)
 
     if ($sharech -eq 1) {
-           $nfsinstalled = apt-cache policy nfs-kernel-server | grep 'none'
-            if ($cifsinstalled -ne $NULL) {
-                apt install nfs-kernel-serverx
-        }
 
-        if (Test-Path /root/ddd -eq $False){
-        mkdir /root/ddd
+    localcapconfig
+
+           $nfsserverinstalled = apt-cache policy nfs-kernel-server | grep 'none'
+            if ($nfsserverinstalled -ne $NULL) {
+                apt install nfs-kernel-server
         }
 
         (Get-Content /etc/exports) -notmatch "/root/ddd" | Set-Content /etc/exports
         echo "/root/ddd *(rw,all_squash,insecure,async,no_subtree_check,anonuid=0,anongid=0)" >> /etc/exports
         exportfs -ra
+        systemctl restart nfs-kernel-server
 
         Write-Host ""
-        Write-host "NFS Done"
+        Write-host "NFS share created."
+        $nfsservercurrip = hostname -I
+        $nfsservercurrip = $nfsservercurrip.TrimEnd()
+        $nfsserverconnstring = "Connection string:   " + $nfsservercurrip + ":/root/ddd"
+        Write-Host $nfsserverconnstring
+        Write-Host "NFS Version: 3"
 
     }
     if ($sharech -eq 2) {
-        #cifs serve
+
+    localcapconfig
+            $cifsserverinstalled = apt-cache policy samba-common-bin | grep 'none'
+            if ($cifsserverinstalled -ne $NULL) {
+                apt install samba-common-bin
+        }
+
+        $smbconffiledec = [System.Convert]::FromBase64String($smbconffile)
+        Set-Content -Path /etc/samba/smb.conf -Value $smbconffiledec -AsByteStream
+        systemctl restart smbd
+
+        Write-Host ""
+        Write-Host "CIFS share created."
+        $cifsservercurrip = hostname -I
+        $cifsservercurrip = $cifsservercurrip.TrimEnd()
+        $cifsserversharepath = "Share path:   \\" + $cifsservercurrip + "\Domesday Duplicator"
+        Write-Host $cifsserversharepath
+
     }
 }
 
