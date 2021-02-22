@@ -22,7 +22,11 @@ This image contains the following software:
 
 Download and flash the latest release, available [here](https://github.com/TokugawaHeavyIndustries/DomePi/releases/latest).
 
-It is highly recommended to use the flashable image, as it has been tested. However, you may also install yourself using the provided setup script.  Note, this has only been tested on Raspberry Pi OS Lite.
+After installation, run `sudo ./post-install.sh` to configure the install.
+
+
+
+It is highly recommended to use the flashable image, as it has been extensively tested. However, you may also install yourself using the provided setup script.  Note, this has only been tested on Raspberry Pi OS Lite, armhf.  Remember to run post install after.
 
 ```
 wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/setup.sh
@@ -40,7 +44,6 @@ http://192.168.1.199:8080
 ## Notes
 
 1) Default username/password is pi/raspberry.  You'll want to change this by logging in via ssh and using passwd.
-2) NFS Server connect string mount -t nfs -o vers=3 192.168.20.123:/root/ddd/ /mnt/nfstest
 
 ## License
 This image contains the Domesday Duplicator software from Simon Inns and is shared under the original software's license: [GPLv3](https://github.com/TokugawaHeavyIndustries/DomePi/blob/main/LICENSE)
