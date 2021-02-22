@@ -44,6 +44,11 @@ http://192.168.1.199:8080
 ## Notes
 
 1) Default username/password is pi/raspberry.  You'll want to change this by logging in via ssh and using passwd.
+2) If capturing to local storage, the SMB share is not password protected.
+3) If capturing to local storage, the NFS share is valid for all connecting hosts.
+4) If capturing to SMB storage, your username and password are stored in plain text in fstab.
+
+All of the above will be mitigated in a future release.
 
 ## License
 This image contains the Domesday Duplicator software from Simon Inns and is shared under the original software's license: [GPLv3](https://github.com/TokugawaHeavyIndustries/DomePi/blob/main/LICENSE)
