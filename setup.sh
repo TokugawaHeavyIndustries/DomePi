@@ -54,4 +54,9 @@ qmake
 make all
 make install
 
+##copy post install to home dir
+cd /home/pi
+wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/post-install.sh
+chmod +x ./post-install.sh
+
 reboot now
