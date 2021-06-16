@@ -426,6 +426,26 @@ serialsetup
 
 else {}
 
+<#
+do {
+Clear-Host
+Write-Host "USB VIDEO SETUP"
+Write-Host ""
+Write-Host ""
+Write-Host "DomePi can display video-in from your Laserdisc"
+Write-Host "player if you have a supported USB capture"
+Write-Host "device attached to the USB 2.0 ports."
+Write-Host ""
+$videoinchoice = Read-Host -Prompt "Want to set up video-in? Y/(N) "
+
+if ($videoinchoice -eq "y"){
+    apt get install mplayer
+    mplayer tv:// -tv driver=v4l2:device=/dev/video0 -vf scale=400:300 -zoom
+}
+
+#>
+
+
 do {
 Clear-Host
 Write-Host "CAPTURE SETUP"
