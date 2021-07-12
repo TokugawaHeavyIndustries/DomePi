@@ -442,17 +442,16 @@ if ($videoinchoice -eq "y"){
     apt install mplayer ffmpeg pulseaudio golang 
     go get -v golang.org/x/net/websocket
     
-    Add-Content /etc/supervisor/conf.d/supervisord.conf "`n
-`n
-[pulseaudio]`n
-command=pulseaudio --start --exit-idle-time=-1`n
-`n
-[ffmpeg]`n
-command=ffmpeg -f alsa -i pulse -f mpegts -codec:a mp2 udp://localhost:1234`n
-`n
-[mplayer]`n
-command=mplayer tv:// -tv driver=v4l2 -vf scale=400:300 -zoom
-"
+    "" >> /etc/supervisor/conf.d/supervisord.conf
+    "[pulseaudio]" >> /etc/supervisor/conf.d/supervisord.conf
+    "command=pulseaudio --start --exit-idle-time=-1" >> /etc/supervisor/conf.d/supervisord.conf
+    "" >> /etc/supervisor/conf.d/supervisord.conf
+    "[ffmpeg]" >> /etc/supervisor/conf.d/supervisord.conf
+    "command=ffmpeg -f alsa -i pulse -f mpegts -codec:a mp2 udp://localhost:1234" >> /etc/supervisor/conf.d/supervisord.conf
+    "" >> /etc/supervisor/conf.d/supervisord.conf
+    "[mplayer]" >> /etc/supervisor/conf.d/supervisord.conf
+    "command=mplayer tv:// -tv driver=v4l2 -vf scale=400:300 -zoom" >> /etc/supervisor/conf.d/supervisord.conf
+
 $replnovnc = Get-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
 $newnovnc = $replnovnc -replace '/usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 8080', 'go run main.go --static ./static --vncAddress localhost:5900 --udpAddress :1234'
 $newnovnc | Set-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
