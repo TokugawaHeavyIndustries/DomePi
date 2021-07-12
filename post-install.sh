@@ -443,20 +443,20 @@ if ($videoinchoice -eq "y"){
     go get -v golang.org/x/net/websocket
     
     Add-Content /etc/supervisor/conf.d/supervisord.conf "`n
-    `n
-    [pulseaudio]`n
-    command=pulseaudio --start --exit-idle-time=-1`n
-    `n
-    [ffmpeg]`n
-    command=ffmpeg -f alsa -i pulse -f mpegts -codec:a mp2 udp://localhost:1234`n
-    `n
-    [mplayer]`n
-    command=mplayer tv:// -tv driver=v4l2 -vf scale=400:300 -zoom
-    "
-    $replnovnc = Get-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
-    $newnovnc = $replnovnc -replace '/usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 8080', 'go run main.go --static ./static --vncAddress localhost:5900 --udpAddress :1234'
-    $newnovnc | Set-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
-    $usbvidcapsetup = 1
+`n
+[pulseaudio]`n
+command=pulseaudio --start --exit-idle-time=-1`n
+`n
+[ffmpeg]`n
+command=ffmpeg -f alsa -i pulse -f mpegts -codec:a mp2 udp://localhost:1234`n
+`n
+[mplayer]`n
+command=mplayer tv:// -tv driver=v4l2 -vf scale=400:300 -zoom
+"
+$replnovnc = Get-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
+$newnovnc = $replnovnc -replace '/usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 8080', 'go run main.go --static ./static --vncAddress localhost:5900 --udpAddress :1234'
+$newnovnc | Set-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
+$usbvidcapsetup = 1
 }
 
 if ($videoinchoice -eq "n"){
