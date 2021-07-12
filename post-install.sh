@@ -427,6 +427,7 @@ serialsetup
 else {}
 
 do {
+$usbvidcapsetup = 0
 Clear-Host
 Write-Host "USB VIDEO SETUP"
 Write-Host ""
@@ -455,7 +456,14 @@ if ($videoinchoice -eq "y"){
     $replnovnc = Get-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
     $newnovnc = $replnovnc -replace '/usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 8080', 'go run main.go --static ./static --vncAddress localhost:5900 --udpAddress :1234'
     $newnovnc | Set-Content -Path "/etc/supervisor/conf.d/supervisord.conf"
+    $usbvidcapsetup = 1
 }
+
+if ($videoinchoice -eq "n"){
+    $usbvidcapsetup = 1
+}
+}
+until ($usbvidcapsetup = 1)
 
 
 do {
