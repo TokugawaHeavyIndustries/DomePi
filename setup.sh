@@ -66,4 +66,9 @@ cd /home/pi
 wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/post-install.sh
 chmod +x ./post-install.sh
 
-reboot now
+cd /etc
+wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/ledblink.sh
+chmod +x ./ledblink.sh
+echo "@reboot root /bin/sh /etc/ledblink.sh" > /home/pi/ledblink
+mv /home/pi/ledblink /etc/cron.d/ledblink
+chown root /etc/cron.d/ledblink
