@@ -23,17 +23,13 @@ This image contains the following software:
 
 Download and flash the latest release, available [here](https://github.com/TokugawaHeavyIndustries/DomePi/releases/latest).
 
-After installation, run `sudo ./post-install.sh` to configure the install.
+Make sure you're connected to Ethernet [(or WiFi)](https://www.raspberrypi.org/documentation/computers/configuration.html#configuring-networking31), as this image is bare and simply bootstraps the setup.  Once powered up, the setup process will start setting everything up.  The onboard green LED will blink in a 1s ON 1s OFF pattern when setup is completed:
+
+!(like so)[https://i.imgur.com/FTuUadb.gif]
+
+Then, ssh in and run `sudo ./post-install.sh` to configure the install.
 
 
-
-It is highly recommended to use the flashable image, as it has been extensively tested. However, you may also install yourself using the provided setup script.  Note, this has only been tested on Raspberry Pi OS Lite, armhf.  Remember to run post install after.
-
-```
-wget https://raw.githubusercontent.com/TokugawaHeavyIndustries/DomePi/main/setup.sh
-chmod +x setup.sh
-sudo ./setup.sh
-```
 
 ## Usage
 
