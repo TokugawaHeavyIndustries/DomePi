@@ -1,5 +1,12 @@
 #!/bin/bash
 
+## Update hostname
+
+NEW_NAME="domepi"
+echo $NEW_NAME > /etc/hostname
+sed -i "s/raspberrypi/$NEW_NAME/g" /etc/hosts
+hostname $NEW_NAME
+
 ## install PowerShell mainly because I love PowerShell and I wrote the post install script in it
 
 if ! command -v pwsh &> /dev/null
