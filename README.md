@@ -15,7 +15,8 @@ This image contains the following software:
 * Fluxbox - Small window manager
 * Supervisor - Process controller
 * usbreset - Resets the usb bus on init
-* DomesdayDuplicator - GUI front-end for the Domesday Duplicator project [repo](https://github.com/simoninns/DomesdayDuplicator)
+* DomesdayDuplicator - GUI front-end for the Domesday Duplicator project [(repo)](https://github.com/simoninns/DomesdayDuplicator)
+* raspberian-firstboot - Modified image with firstboot to bootstrap DomePi setup [(repo)](https://github.com/nmcclain/raspberian-firstboot)
 
 
 ## Installation
