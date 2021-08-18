@@ -25,7 +25,7 @@ Download and flash the latest release, available [here](https://github.com/Tokug
 
 Make sure you're connected to Ethernet [(or WiFi)](https://www.raspberrypi.org/documentation/computers/configuration.html#configuring-networking31), as this image is bare and simply bootstraps the setup.  Once powered up, the setup process will start setting everything up.  The onboard green LED will blink in a 1s ON 1s OFF pattern when setup is completed:
 
-!(like so)[https://i.imgur.com/FTuUadb.gif]
+![like so](https://i.imgur.com/FTuUadb.gif)
 
 Then, ssh in and run `sudo ./post-install.sh` to configure the install.
 
