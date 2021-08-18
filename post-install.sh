@@ -608,3 +608,5 @@ if ($capturech -eq 2) {
 
 
 }
+
+Remove-Item /etc/cron.d/ledblink
