@@ -1,3 +1,7 @@
+# NOTE
+
+This project is archived.  After extensive testing, it's been shown the RPi4 is not fast enough for real-time capture.  Use this project at your own risk.
+
 # DomePi
 
 A Raspberry Pi image that features the Domesday Duplicator capture application via a web-accessible VNC client.
